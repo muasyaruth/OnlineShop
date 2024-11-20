@@ -100,9 +100,13 @@ confirmQuantityButton.addEventListener('click', () => {
 
 // Open cart modal and display cart items
 openCartButton.addEventListener('click', () => {
+
+    // If there are no items in the cart
     if (cart.length === 0) {
         alert('Your cart is empty! Please add items to the cart before viewing.');
-    } else {
+    } 
+    // 
+    else {
         // Populate and display the cart modal if there are items in the cart
         cartItemsContainer.innerHTML = '<h2>Items added to cart</h2>';
         cart.forEach(item => {
