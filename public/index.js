@@ -10,11 +10,27 @@ const cartItemsContainer = document.getElementById('cartItems');
 const quantityInput = document.getElementById('quantityInput');
 const confirmQuantityButton = document.getElementById('confirmQuantity');
 const openCartButton = document.getElementById('openCart');
-const userForm = document.getElementById('userForm');
+const myDetails = document.getElementById('userDetails')
+const userForm = document.getElementById('formModal');
 const selectedItemName = document.getElementById('selectedItemName');
+const activeOders = document.getElementById('order-items');
+const submit = document.getElementById('submit');
+const userName = document.getElementById('name');
+const userMail = document.getElementById('email');
+const userAddress = document.getElementById('address');
+const userLocation = document.getElementById('location');
+const ordersBtn = document.getElementById('viewOrders')
+const formClose = document.getElementById('closeForm')
+
+// myDetails.style.color='green'
 
 // Store cart items
 let cart = []; 
+let ordersList =[];
+
+
+
+
 
 // Display items from server
 viewButton.addEventListener('click', async () => {
@@ -63,9 +79,34 @@ viewButton.addEventListener('click', async () => {
 });
 
 // function to close form
-function closeForm(modal) {
+function close(modal) {
     modal.style.display = 'none';
+
+    function userFormDetails(){
+        userForm.style.display = 'block'
+    }
+
+    myDetails.addEventListener('click', userFormDetails )
 }
+
+// function closeTheForm(name, email, address, location){
+//     name = userName.value;
+//     email = userMail.value
+//     address = userAddress.value;
+//     location= userLocation.value;
+
+//     if(
+//         userName==""
+//     ){
+//         alert("Enter valid name")
+//     } else{
+//         alert("submitted successfully")
+//     }
+
+
+// }
+// submit.addEventListener('click', closeTheForm);
+
 
 // Function to confirm quantity and add item to cart
 confirmQuantityButton.addEventListener('click', () => {
@@ -86,7 +127,7 @@ confirmQuantityButton.addEventListener('click', () => {
         alert(`${quantity} x ${itemName} added to cart. Total cost: ${totalCost} KSH`);
 
         // call the function to close the form
-        closeForm(quantityModal);  
+        close(quantityModal);  
     } 
     // If the condition is not met
     else {
@@ -95,6 +136,7 @@ confirmQuantityButton.addEventListener('click', () => {
 
     // Clear quantity input for the next use
     quantityInput.value = '';
+    
 });
 
 
@@ -120,19 +162,41 @@ openCartButton.addEventListener('click', () => {
     }
 });
 
-
-// Form submission in the cart modal
+            // Form submission in the cart modal
 userForm.addEventListener('submit', (event) => {
     event.preventDefault();
+
+    const details = {
+        name: userName.value,
+        email: userMail.value,
+        address: userAddress.value,
+        location: userLocation.value,
+        cart: [...cart],
+    }
+
+    ordersList.push(details);
+
+    localStorage.setItem('orders', JSON.stringify(ordersList));
     alert('Order placed successfully!');
-    closeForm(itemModal);
-    // Clear cart after submission
+
+    
+    close(itemModal);
+    
+                // Clear cart after submission
     cart = []; 
 });
+
 
 // Close modals when clicking the close button
 document.querySelectorAll('.close').forEach(closeButton => {
     closeButton.addEventListener('click', () => {
-        closeForm(closeButton.closest('.modal'));
+        close(closeButton.closest('.modal'));
+        userForm.style.display= 'none'
     });
 });
+
+function closeForm(){
+    userForm.style.display = 'none'
+}
+
+formClose.addEventListener('click', closeForm);
